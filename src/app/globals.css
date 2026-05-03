@@ -30,17 +30,20 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.text-stroke-white {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  color: transparent;
 }
 
 .bg-mesh {
-  background-color: #0a0a0a;
+  background-color: #000000;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.05) 0, transparent 50%), 
-    radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.05) 0, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.03) 0, transparent 50%), 
+    radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.03) 0, transparent 50%);
+}
+
+canvas {
+  touch-action: none;
 }
 
 .hover-lift {

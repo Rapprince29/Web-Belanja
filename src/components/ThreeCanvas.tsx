@@ -2,36 +2,39 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { PerspectiveCamera, Environment, ContactShadows, Preload, AdaptiveEvents, AdaptiveDpr } from "@react-three/drei";
+import { PerspectiveCamera, Environment, ContactShadows, Preload, AdaptiveEvents, AdaptiveDpr, Float } from "@react-three/drei";
 import Hero3D from "./Hero3D";
+import BackgroundParticles from "./BackgroundParticles";
 
 const ThreeCanvas = () => {
   return (
-    <div className="absolute top-0 right-0 w-full lg:w-3/4 h-screen z-0 pointer-events-none overflow-visible">
+    <div className="fixed inset-0 z-0 pointer-events-none">
       <Canvas 
         dpr={[1, 1.5]} 
-        shadows 
-        gl={{ antialias: false, powerPreference: "high-performance" }}
-        camera={{ position: [0, 0, 5], fov: 40 }}
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+        camera={{ position: [0, 0, 8], fov: 45 }}
       >
         <AdaptiveDpr pixelated />
         <AdaptiveEvents />
-        <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={35} />
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={1.5} castShadow />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#d4af37" />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
+        <pointLight position={[-10, -10, -10]} intensity={1} color="#ffffff" />
         
         <Suspense fallback={null}>
-          <Hero3D />
-          <Environment preset="studio" />
+          <BackgroundParticles />
+          <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+            <Hero3D />
+          </Float>
+          <Environment preset="night" />
         </Suspense>
 
         <ContactShadows 
-          position={[0, -2, 0]} 
-          opacity={0.4} 
-          scale={15} 
-          blur={2.5} 
-          far={5} 
+          position={[0, -3, 0]} 
+          opacity={0.2} 
+          scale={20} 
+          blur={3} 
+          far={10} 
           resolution={256}
         />
         <Preload all />
