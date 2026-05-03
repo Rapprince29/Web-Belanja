@@ -2,7 +2,7 @@
 
 import ThreeCanvas from "@/components/ThreeCanvas";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Star, ShoppingBag, CheckCircle } from "lucide-react";
+import { ArrowRight, Star, ShoppingBag, CheckCircle, Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -18,128 +18,133 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-mesh overflow-hidden">
+    <main className="min-h-screen pt-20 bg-dot relative">
       
-      {/* Global Toast */}
+      {/* Toast Notification */}
       <AnimatePresence>
         {showToast && (
           <motion.div
-            initial={{ opacity: 0, y: 50, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            className="fixed bottom-10 left-1/2 z-[100] glass px-8 py-4 rounded-2xl flex items-center gap-4 border border-accent/20"
+            initial={{ opacity: 0, scale: 0.5, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="fixed bottom-10 right-10 z-[100] bg-yellow border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex items-center gap-4"
           >
-            <CheckCircle className="text-accent" />
-            <span className="font-bold text-sm tracking-widest">{activeProduct} ADDED TO CART</span>
+            <Zap size={32} fill="black" />
+            <span className="font-black text-xl uppercase tracking-tighter">{activeProduct} ADDED!</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center px-6 md:px-20 hero-section">
-        <ThreeCanvas />
+      {/* Hero Section: Experimental Bento Layout */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-80px)] border-b-4 border-black">
         
-        <div className="relative z-10 max-w-2xl">
+        {/* Left Column: Text */}
+        <div className="lg:col-span-7 p-10 lg:p-20 border-r-4 border-black flex flex-col justify-center bg-white">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "backOut" }}
           >
-            <span className="text-accent font-bold tracking-[0.5em] text-sm mb-4 block">PREMIUM COLLECTION 2024</span>
-            <h1 className="text-6xl md:text-9xl font-bold tracking-tighter leading-none mb-6">
-              THE ART OF <br />
-              <span className="text-gradient italic">ELEGANCE</span>
+            <div className="bg-secondary border-4 border-black px-4 py-2 inline-block mb-8 font-black uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              EXPERIMENTAL SHOPPING 2024
+            </div>
+            <h1 className="text-7xl lg:text-9xl font-black tracking-tighter leading-[0.8] mb-10 uppercase">
+              REDEFINING <br />
+              <span className="bg-yellow px-4 border-4 border-black">LUXURY</span>
             </h1>
-            <p className="text-muted-foreground text-lg mb-8 max-w-md leading-relaxed">
-              Experience the future of commerce with our immersive 3D shopping experience. Crafted for those who appreciate the finer things.
+            <p className="text-2xl font-bold max-w-xl mb-12 leading-tight">
+              A Neo-Brutalist approach to digital commerce. Bold, raw, and absolutely immersive.
             </p>
             
-            <div className="flex items-center gap-4">
-              <Link href="/catalog" className="bg-accent text-accent-foreground px-10 py-5 rounded-full font-black text-xs tracking-[0.2em] flex items-center gap-2 hover:scale-105 hover:bg-white transition-all shadow-lg shadow-accent/20">
-                START SHOPPING <ArrowRight size={18} />
+            <div className="flex flex-wrap gap-6">
+              <Link href="/catalog" className="brutal-btn bg-accent text-white text-2xl flex items-center gap-3">
+                EXPLORE NOW <ArrowRight size={32} strokeWidth={3} />
               </Link>
-              <button className="border border-white/10 hover:bg-white/5 px-10 py-5 rounded-full font-black text-xs tracking-[0.2em] transition-all">
+              <button className="brutal-btn bg-white text-black text-2xl border-4 border-black">
                 OUR STORY
               </button>
             </div>
           </motion.div>
         </div>
 
-        {/* Floating Stats */}
-        <div className="absolute right-20 bottom-20 hidden lg:flex flex-col gap-10 text-right z-10">
-          {[
-            { label: "CURATED ITEMS", value: "250+" },
-            { label: "WORLDWIDE DELIVERY", value: "FREE" },
-            { label: "CLIENT SATISFACTION", value: "100%" },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.2 }}
-            >
-              <div className="text-accent font-black text-4xl mb-1">{stat.value}</div>
-              <div className="text-muted-foreground text-[10px] tracking-[0.3em] font-bold">{stat.label}</div>
-            </motion.div>
-          ))}
+        {/* Right Column: 3D Scene */}
+        <div className="lg:col-span-5 relative bg-muted flex items-center justify-center p-10">
+          <div className="w-full h-full border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] bg-white relative overflow-hidden">
+            <div className="absolute top-4 left-4 z-10 bg-black text-white px-3 py-1 font-black text-xs">LIVE_3D_RENDER.EXE</div>
+            <ThreeCanvas />
+          </div>
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-40 px-6 md:px-20 bg-background relative z-10">
-        <div className="flex justify-between items-end mb-20">
-          <div>
-            <h2 className="text-5xl font-bold tracking-tighter mb-4">SELECTED PIECES</h2>
-            <div className="h-1 w-24 bg-accent"></div>
+      {/* Experimental Grid Section */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b-4 border-black">
+        {[
+          { label: "MINIMALIST", color: "bg-white", text: "Pure space." },
+          { label: "BRUTAL", color: "bg-yellow", text: "Bold borders." },
+          { label: "EXPERIMENTAL", color: "bg-secondary", text: "Break rules." },
+          { label: "3D MOTION", color: "bg-accent", text: "Fluid art." },
+        ].map((item, i) => (
+          <div key={i} className={`${item.color} p-10 border-r-4 last:border-r-0 border-black group cursor-help transition-all hover:bg-black hover:text-white`}>
+            <h3 className="text-4xl font-black mb-4 tracking-tighter italic">{item.label}</h3>
+            <p className="font-bold text-lg opacity-60 group-hover:opacity-100">{item.text}</p>
           </div>
-          <Link href="/catalog" className="text-accent font-black text-xs tracking-[0.3em] flex items-center gap-2 hover:gap-4 transition-all">
-            VIEW ALL COLLECTIONS <ArrowRight size={16} />
+        ))}
+      </section>
+
+      {/* Featured Products: Brutalist Grid */}
+      <section className="p-10 lg:p-20">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-10">
+          <div>
+            <h2 className="text-6xl lg:text-8xl font-black tracking-tighter uppercase italic">Featured Pieces</h2>
+            <div className="h-4 w-64 bg-accent border-4 border-black -mt-4 ml-4"></div>
+          </div>
+          <Link href="/catalog" className="brutal-btn bg-secondary text-black">
+            VIEW ALL COLLECTIONS
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
-            { id: 4, name: "MODERN LAMP", price: "$230", img: "/lamp.png" },
-            { id: 5, name: "SILK SCARF", price: "$150", img: "/scarf.png" },
-            { id: 6, name: "CERAMIC BOWL", price: "$85", img: "/bowl.png" },
+            { id: 4, name: "MODERN LAMP", price: "$230", img: "/lamp.png", color: "bg-yellow" },
+            { id: 5, name: "SILK SCARF", price: "$150", img: "/scarf.png", color: "bg-secondary" },
+            { id: 6, name: "CERAMIC BOWL", price: "$85", img: "/bowl.png", color: "bg-accent" },
           ].map((product, i) => (
             <motion.div 
               key={product.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="group"
+              whileHover={{ scale: 1.02 }}
+              className="brutal-card group flex flex-col"
             >
-              <Link href={`/product/${product.id}`}>
-                <div className="aspect-[4/5] glass rounded-[2.5rem] mb-8 relative overflow-hidden flex items-center justify-center">
+              <Link href={`/product/${product.id}`} className="flex-1 flex flex-col">
+                <div className={`aspect-square border-b-4 border-black relative overflow-hidden ${product.color}`}>
                   <Image 
                     src={product.img} 
                     alt={product.name}
                     fill
-                    className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
-                  <button 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addToCart(product.name);
-                    }}
-                    className="absolute bottom-8 right-8 p-5 bg-white text-black rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-accent z-20"
-                  >
-                    <ShoppingBag size={24} />
-                  </button>
-                </div>
-                <div className="flex justify-between items-start px-2">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-1">{product.name}</h3>
-                    <p className="text-muted-foreground text-[10px] tracking-[0.3em] font-bold">LIMITED EDITION</p>
+                  <div className="absolute top-4 right-4 bg-black text-white px-3 py-1 font-black text-xs italic">
+                    {product.id}.COLLECTION
                   </div>
-                  <div className="text-right">
-                    <div className="text-accent font-bold text-xl">{product.price}</div>
-                    <div className="flex items-center gap-1 text-xs mt-2 justify-end">
-                      <Star size={12} fill="currentColor" className="text-accent" />
-                      <span className="text-muted-foreground font-bold">5.0</span>
+                </div>
+                <div className="p-8 flex-1 flex flex-col justify-between bg-white">
+                  <div>
+                    <h3 className="text-4xl font-black mb-2 tracking-tighter">{product.name}</h3>
+                    <div className="flex items-center gap-2 mb-6">
+                      <Star size={16} fill="black" />
+                      <span className="font-black text-sm uppercase">TOP RATED</span>
                     </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-3xl font-black underline decoration-yellow decoration-8 underline-offset-4">{product.price}</div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addToCart(product.name);
+                      }}
+                      className="bg-black text-white p-4 hover:bg-yellow hover:text-black transition-colors"
+                    >
+                      <ShoppingBag size={28} strokeWidth={3} />
+                    </button>
                   </div>
                 </div>
               </Link>
@@ -147,6 +152,45 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Brutalist Footer */}
+      <footer className="bg-black text-white p-10 lg:p-20 border-t-8 border-yellow">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-20">
+          <div className="lg:col-span-6">
+            <h2 className="text-6xl lg:text-9xl font-black tracking-tighter leading-none mb-10 text-stroke">STAY BOLD.</h2>
+            <p className="text-2xl font-bold max-w-md mb-10 text-yellow">Join the neo-belanja circle for exclusive drops and experimental releases.</p>
+            <div className="flex border-4 border-white">
+              <input type="text" placeholder="YOUR_EMAIL@XYZ.COM" className="bg-transparent p-6 flex-1 font-black uppercase focus:outline-none" />
+              <button className="bg-white text-black px-10 font-black uppercase text-xl hover:bg-yellow transition-colors">JOIN</button>
+            </div>
+          </div>
+          <div className="lg:col-span-6 grid grid-cols-2 gap-10">
+            <div>
+              <h4 className="font-black text-yellow text-xl mb-8 uppercase tracking-widest italic">Navigation</h4>
+              <ul className="flex flex-col gap-4 font-black text-4xl tracking-tighter">
+                <li><Link href="/catalog" className="hover:line-through">SHOP</Link></li>
+                <li><Link href="#" className="hover:line-through">ABOUT</Link></li>
+                <li><Link href="#" className="hover:line-through">STORY</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-black text-secondary text-xl mb-8 uppercase tracking-widest italic">Social</h4>
+              <ul className="flex flex-col gap-4 font-black text-4xl tracking-tighter">
+                <li><Link href="#" className="hover:line-through">IG</Link></li>
+                <li><Link href="#" className="hover:line-through">TW</Link></li>
+                <li><Link href="#" className="hover:line-through">FB</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col md:row justify-between items-center pt-10 border-t-2 border-white/20 font-black text-xs tracking-[0.5em] text-white/40">
+          <div>NEO BELANJA // 2024 © ALL RIGHTS RESERVED</div>
+          <div className="flex gap-10 mt-6 md:mt-0">
+            <Link href="#">PRIVACY_POL</Link>
+            <Link href="#">TERMS_SERV</Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

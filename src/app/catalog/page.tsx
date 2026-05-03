@@ -3,16 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Filter, ChevronDown, ShoppingBag, CheckCircle } from "lucide-react";
+import { Filter, ChevronDown, ShoppingBag, Zap } from "lucide-react";
 import { useState } from "react";
 
 const products = [
-  { id: 1, name: "AESTHETIC VASE", price: "$120", category: "DECOR", img: "/vase.png" },
-  { id: 2, name: "MINIMALIST CHAIR", price: "$450", category: "FURNITURE", img: "/chair.png" },
-  { id: 3, name: "LUXE TIMEPIECE", price: "$890", category: "ACCESSORIES", img: "/watch.png" },
-  { id: 4, name: "MODERN LAMP", price: "$230", category: "LIGHTING", img: "/lamp.png" },
-  { id: 5, name: "SILK SCARF", price: "$150", category: "FASHION", img: "/scarf.png" },
-  { id: 6, name: "CERAMIC BOWL", price: "$85", category: "DECOR", img: "/bowl.png" },
+  { id: 1, name: "AESTHETIC VASE", price: "$120", category: "DECOR", img: "/vase.png", color: "bg-yellow" },
+  { id: 2, name: "MINIMALIST CHAIR", price: "$450", category: "FURNITURE", img: "/chair.png", color: "bg-secondary" },
+  { id: 3, name: "LUXE TIMEPIECE", price: "$890", category: "ACCESSORIES", img: "/watch.png", color: "bg-accent" },
+  { id: 4, name: "MODERN LAMP", price: "$230", category: "LIGHTING", img: "/lamp.png", color: "bg-yellow" },
+  { id: 5, name: "SILK SCARF", price: "$150", category: "FASHION", img: "/scarf.png", color: "bg-secondary" },
+  { id: 6, name: "CERAMIC BOWL", price: "$85", category: "DECOR", img: "/bowl.png", color: "bg-accent" },
 ];
 
 export default function Catalog() {
@@ -24,91 +24,80 @@ export default function Catalog() {
     e.stopPropagation();
     setActiveProduct(name);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    setTimeout(() => setShowToast(false), 2000);
   };
 
   return (
-    <main className="min-h-screen bg-background pt-32 pb-20 px-6 md:px-20 relative">
+    <main className="min-h-screen pt-32 pb-20 px-6 md:px-20 bg-dot">
       
-      {/* Toast Notification */}
       <AnimatePresence>
         {showToast && (
           <motion.div
-            initial={{ opacity: 0, y: 50, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            className="fixed bottom-10 left-1/2 z-[100] glass px-8 py-4 rounded-2xl flex items-center gap-4 border border-accent/20"
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 300, opacity: 0 }}
+            className="fixed top-24 right-6 z-[100] bg-black text-white border-4 border-yellow p-6 shadow-[8px_8px_0px_0px_rgba(255,255,0,1)] font-black uppercase flex items-center gap-4"
           >
-            <CheckCircle className="text-accent" />
-            <span className="font-bold text-sm tracking-widest">{activeProduct} ADDED TO CART</span>
+            <Zap size={24} className="text-yellow" />
+            <span>{activeProduct} SAVED!</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <header className="mb-16">
-        <h1 className="text-5xl font-bold tracking-tight mb-4">COLLECTIONS</h1>
-        <p className="text-muted-foreground max-w-md">Browse our curated selection of high-end products designed for the modern lifestyle.</p>
+      <header className="mb-20">
+        <h1 className="text-7xl lg:text-9xl font-black tracking-tighter uppercase italic mb-6">Collections</h1>
+        <div className="flex flex-col lg:flex-row gap-10 lg:items-center">
+          <p className="text-2xl font-bold max-w-xl leading-tight">
+            Experimental silhouettes and brutalist forms. Curated for the modern disruptor.
+          </p>
+          <div className="flex-1 flex justify-end gap-4">
+            <div className="bg-white border-4 border-black px-6 py-4 font-black flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              FILTER <Filter size={20} />
+            </div>
+            <div className="bg-white border-4 border-black px-6 py-4 font-black flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              SORT <ChevronDown size={20} />
+            </div>
+          </div>
+        </div>
       </header>
 
-      <div className="flex flex-col md:row justify-between items-start md:items-center gap-6 mb-12 py-6 border-y border-white/5">
-        <div className="flex gap-8 text-sm font-bold tracking-widest text-muted-foreground">
-          <button className="text-white hover:text-accent transition-colors">ALL</button>
-          <button className="hover:text-white transition-colors">DECOR</button>
-          <button className="hover:text-white transition-colors">FURNITURE</button>
-          <button className="hover:text-white transition-colors">ACCESSORIES</button>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 text-sm font-bold border border-white/10 px-4 py-2 rounded-full hover:border-accent transition-colors">
-            <Filter size={16} /> FILTER
-          </button>
-          <button className="flex items-center gap-2 text-sm font-bold border border-white/10 px-4 py-2 rounded-full hover:border-accent transition-colors">
-            SORT BY <ChevronDown size={16} />
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-20">
         {products.map((product, idx) => (
           <motion.div
             key={product.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="group cursor-pointer"
           >
-            <div className="relative">
-              <Link href={`/product/${product.id}`}>
-                <div className="aspect-square glass rounded-3xl mb-6 relative overflow-hidden flex items-center justify-center">
-                  <div className="absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-                    <Image 
-                      src={product.img} 
-                      alt={product.name}
-                      fill
-                      className="object-cover transform group-hover:scale-110 transition-transform duration-1000"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
+            <div className="brutal-card group flex flex-col h-full bg-white">
+              <Link href={`/product/${product.id}`} className="flex-1 flex flex-col">
+                <div className={`aspect-square border-b-4 border-black relative overflow-hidden ${product.color}`}>
+                  <Image 
+                    src={product.img} 
+                    alt={product.name}
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-black text-white px-3 py-1 font-black text-xs">
+                    MODEL_ID: {product.id}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                <div className="p-8 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase block mb-2">{product.category}</span>
+                    <h3 className="text-4xl font-black tracking-tighter mb-6">{product.name}</h3>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-3xl font-black bg-yellow px-2 border-2 border-black">{product.price}</div>
+                    <button 
+                      onClick={(e) => addToCart(e, product.name)}
+                      className="bg-black text-white p-4 hover:bg-accent transition-colors"
+                    >
+                      <ShoppingBag size={28} strokeWidth={3} />
+                    </button>
+                  </div>
                 </div>
               </Link>
-              
-              {/* Add to Cart Quick Action */}
-              <button 
-                onClick={(e) => addToCart(e, product.name)}
-                className="absolute top-6 right-6 p-4 glass rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-accent hover:text-black"
-                title="Add to Cart"
-              >
-                <ShoppingBag size={20} />
-              </button>
-            </div>
-
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-[10px] tracking-[0.3em] font-bold text-accent mb-1 uppercase">{product.category}</p>
-                <h3 className="text-xl font-bold">{product.name}</h3>
-              </div>
-              <p className="text-lg font-medium text-muted-foreground">{product.price}</p>
             </div>
           </motion.div>
         ))}
