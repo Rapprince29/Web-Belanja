@@ -111,33 +111,38 @@ export default function Home() {
               transition={{ delay: i * 0.2 }}
               className="group"
             >
-              <div className="aspect-[4/5] glass rounded-[2.5rem] mb-8 relative overflow-hidden flex items-center justify-center">
-                <Image 
-                  src={product.img} 
-                  alt={product.name}
-                  fill
-                  className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
-                />
-                <button 
-                  onClick={() => addToCart(product.name)}
-                  className="absolute bottom-8 right-8 p-5 bg-white text-black rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-accent"
-                >
-                  <ShoppingBag size={24} />
-                </button>
-              </div>
-              <div className="flex justify-between items-start px-2">
-                <div>
-                  <h3 className="text-2xl font-bold mb-1">{product.name}</h3>
-                  <p className="text-muted-foreground text-[10px] tracking-[0.3em] font-bold">LIMITED EDITION</p>
+              <Link href={`/product/${product.id}`}>
+                <div className="aspect-[4/5] glass rounded-[2.5rem] mb-8 relative overflow-hidden flex items-center justify-center">
+                  <Image 
+                    src={product.img} 
+                    alt={product.name}
+                    fill
+                    className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+                  />
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(product.name);
+                    }}
+                    className="absolute bottom-8 right-8 p-5 bg-white text-black rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-accent z-20"
+                  >
+                    <ShoppingBag size={24} />
+                  </button>
                 </div>
-                <div className="text-right">
-                  <div className="text-accent font-bold text-xl">{product.price}</div>
-                  <div className="flex items-center gap-1 text-xs mt-2 justify-end">
-                    <Star size={12} fill="currentColor" className="text-accent" />
-                    <span className="text-muted-foreground font-bold">5.0</span>
+                <div className="flex justify-between items-start px-2">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-1">{product.name}</h3>
+                    <p className="text-muted-foreground text-[10px] tracking-[0.3em] font-bold">LIMITED EDITION</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-accent font-bold text-xl">{product.price}</div>
+                    <div className="flex items-center gap-1 text-xs mt-2 justify-end">
+                      <Star size={12} fill="currentColor" className="text-accent" />
+                      <span className="text-muted-foreground font-bold">5.0</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
