@@ -11,47 +11,47 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero3D = () => {
   const groupRef = useRef<THREE.Group>(null);
-  const part1Ref = useRef<THREE.Mesh>(null);
-  const part2Ref = useRef<THREE.Mesh>(null);
-  const part3Ref = useRef<THREE.Mesh>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
+  const ring1Ref = useRef<THREE.Mesh>(null);
+  const ring2Ref = useRef<THREE.Mesh>(null);
 
-  // Memoize geometries and materials for performance
+  // Memoize geometries for performance
   const geometries = useMemo(() => ({
-    core: new THREE.OctahedronGeometry(1, 0),
-    part1: new THREE.BoxGeometry(0.8, 0.05, 0.8),
-    part2: new THREE.BoxGeometry(1.2, 0.05, 1.2),
+    core: new THREE.IcosahedronGeometry(1.2, 0),
+    ring1: new THREE.TorusGeometry(2, 0.02, 16, 100),
+    ring2: new THREE.TorusGeometry(2.4, 0.01, 16, 100),
   }), []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (part1Ref.current && part2Ref.current && part3Ref.current) {
-        gsap.to(part1Ref.current.position, {
-          y: 2,
-          x: -1,
+      if (coreRef.current && ring1Ref.current && ring2Ref.current) {
+        // Complex exploded/expanded view on scroll
+        gsap.to(ring1Ref.current.scale, {
+          x: 2, y: 2, z: 2,
           scrollTrigger: {
             trigger: "body",
             start: "top top",
             end: "bottom top",
-            scrub: 0.5, // Smoother scrub
+            scrub: 1,
           }
         });
-        gsap.to(part2Ref.current.position, {
-          y: -2,
-          x: 1,
+        gsap.to(ring2Ref.current.rotation, {
+          x: Math.PI * 2,
+          z: Math.PI,
           scrollTrigger: {
             trigger: "body",
             start: "top top",
             end: "bottom top",
-            scrub: 0.5,
+            scrub: 1,
           }
         });
-        gsap.to(part3Ref.current.rotation, {
-          y: Math.PI,
+        gsap.to(coreRef.current.position, {
+          y: 3,
           scrollTrigger: {
             trigger: "body",
             start: "top top",
             end: "bottom top",
-            scrub: 0.5,
+            scrub: 1,
           }
         });
       }
@@ -61,23 +61,35 @@ const Hero3D = () => {
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += 0.003; // Throttled rotation speed
+      groupRef.current.rotation.y += 0.002;
     }
+    if (ring1Ref.current) ring1Ref.current.rotation.z += 0.01;
+    if (ring2Ref.current) ring2Ref.current.rotation.y -= 0.01;
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-        <mesh ref={part3Ref} geometry={geometries.core} castShadow>
-          <MeshDistortMaterial color="#d4af37" speed={1.5} distort={0.2} metalness={0.9} roughness={0.1} />
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+        {/* Luxury Core */}
+        <mesh ref={coreRef} geometry={geometries.core} castShadow>
+          <MeshDistortMaterial 
+            color="#d4af37" 
+            speed={2} 
+            distort={0.4} 
+            metalness={1} 
+            roughness={0.1} 
+            emissive="#d4af37"
+            emissiveIntensity={0.1}
+          />
         </mesh>
 
-        <mesh ref={part1Ref} position={[0, 0.6, 0]} geometry={geometries.part1} castShadow>
-          <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} transparent opacity={0.6} />
+        {/* Cinematic Rings */}
+        <mesh ref={ring1Ref} geometry={geometries.ring1} rotation={[Math.PI / 2, 0, 0]}>
+          <meshStandardMaterial color="#ffffff" metalness={1} roughness={0} transparent opacity={0.3} />
         </mesh>
 
-        <mesh ref={part2Ref} position={[0, -0.6, 0]} geometry={geometries.part2} castShadow>
-          <meshStandardMaterial color="#1e3a8a" metalness={0.8} roughness={0.3} />
+        <mesh ref={ring2Ref} geometry={geometries.ring2} rotation={[0, Math.PI / 4, 0]}>
+          <meshStandardMaterial color="#d4af37" metalness={1} roughness={0} transparent opacity={0.2} />
         </mesh>
       </Float>
     </group>

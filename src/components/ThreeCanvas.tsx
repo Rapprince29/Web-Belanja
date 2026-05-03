@@ -7,30 +7,32 @@ import Hero3D from "./Hero3D";
 
 const ThreeCanvas = () => {
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none">
+    <div className="absolute top-0 right-0 w-full lg:w-3/4 h-screen z-0 pointer-events-none overflow-visible">
       <Canvas 
-        dpr={[1, 1.5]} // Limit DPR for performance
+        dpr={[1, 1.5]} 
         shadows 
-        gl={{ antialias: false, powerPreference: "high-performance" }} // Faster rendering
+        gl={{ antialias: false, powerPreference: "high-performance" }}
+        camera={{ position: [0, 0, 5], fov: 40 }}
       >
         <AdaptiveDpr pixelated />
         <AdaptiveEvents />
-        <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={45} />
-        <ambientLight intensity={0.4} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
+        <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={35} />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={1.5} castShadow />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#d4af37" />
         
         <Suspense fallback={null}>
           <Hero3D />
-          <Environment preset="city" />
+          <Environment preset="studio" />
         </Suspense>
 
         <ContactShadows 
-          position={[0, -1.5, 0]} 
-          opacity={0.3} 
-          scale={8} 
-          blur={3} 
-          far={4} 
-          resolution={256} // Lower resolution shadows for perf
+          position={[0, -2, 0]} 
+          opacity={0.4} 
+          scale={15} 
+          blur={2.5} 
+          far={5} 
+          resolution={256}
         />
         <Preload all />
       </Canvas>
