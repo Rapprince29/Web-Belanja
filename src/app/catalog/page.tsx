@@ -7,12 +7,12 @@ import { Filter, ChevronDown, ShoppingBag, Zap } from "lucide-react";
 import { useState } from "react";
 
 const products = [
-  { id: 1, name: "AESTHETIC VASE", price: "$120", category: "DECOR", img: "/vase.png", color: "bg-yellow" },
-  { id: 2, name: "MINIMALIST CHAIR", price: "$450", category: "FURNITURE", img: "/chair.png", color: "bg-secondary" },
-  { id: 3, name: "LUXE TIMEPIECE", price: "$890", category: "ACCESSORIES", img: "/watch.png", color: "bg-accent" },
-  { id: 4, name: "MODERN LAMP", price: "$230", category: "LIGHTING", img: "/lamp.png", color: "bg-yellow" },
-  { id: 5, name: "SILK SCARF", price: "$150", category: "FASHION", img: "/scarf.png", color: "bg-secondary" },
-  { id: 6, name: "CERAMIC BOWL", price: "$85", category: "DECOR", img: "/bowl.png", color: "bg-accent" },
+  { id: 1, name: "ABSTRACT CANVAS", price: "$120", category: "ART & ILLUSTRATION", img: "/vase.png", color: "bg-yellow" },
+  { id: 2, name: "GEOMETRIC 3D", price: "$450", category: "3D", img: "/chair.png", color: "bg-secondary" },
+  { id: 3, name: "KINETIC TYPE", price: "$890", category: "TYPOGRAPHY", img: "/watch.png", color: "bg-accent" },
+  { id: 4, name: "UI MENU KIT", price: "$230", category: "MENU INSPIRATION", img: "/lamp.png", color: "bg-yellow" },
+  { id: 5, name: "FLUID MOTION", price: "$150", category: "TRANSITIONS", img: "/scarf.png", color: "bg-secondary" },
+  { id: 6, name: "EDITORIAL TYPE", price: "$85", category: "TYPOGRAPHY", img: "/bowl.png", color: "bg-accent" },
 ];
 
 export default function Catalog() {
@@ -45,10 +45,10 @@ export default function Catalog() {
       </AnimatePresence>
 
       <header className="mb-20">
-        <h1 className="text-7xl lg:text-9xl font-black tracking-tighter uppercase italic mb-6">Collections</h1>
+        <h1 className="text-7xl lg:text-9xl font-black tracking-tighter uppercase italic mb-6">Masterpieces</h1>
         <div className="flex flex-col lg:flex-row gap-10 lg:items-center">
           <p className="text-2xl font-bold max-w-xl leading-tight">
-            Experimental silhouettes and brutalist forms. Curated for the modern disruptor.
+            Curated collections of Art, 3D, and Typography. Explore the edge of digital inspiration.
           </p>
           <div className="flex-1 flex justify-end gap-4">
             <div className="bg-white border-4 border-black px-6 py-4 font-black flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -60,6 +60,15 @@ export default function Catalog() {
           </div>
         </div>
       </header>
+
+      {/* Category Pills */}
+      <div className="flex flex-wrap gap-4 mb-16">
+        {["ALL", "ART & ILLUSTRATION", "TYPOGRAPHY", "3D", "MENU INSPIRATION", "TRANSITIONS"].map((cat) => (
+          <button key={cat} className="brutal-btn bg-white hover:bg-black hover:text-white text-xs tracking-widest px-4 py-2">
+            {cat}
+          </button>
+        ))}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-20">
         {products.map((product, idx) => (
@@ -78,13 +87,13 @@ export default function Catalog() {
                     fill
                     className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                   />
-                  <div className="absolute bottom-4 left-4 bg-black text-white px-3 py-1 font-black text-xs">
-                    MODEL_ID: {product.id}
+                  <div className="absolute bottom-4 left-4 bg-black text-white px-3 py-1 font-black text-[10px]">
+                    TYPE: {product.category}
                   </div>
                 </div>
                 <div className="p-8 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase block mb-2">{product.category}</span>
+                    <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase block mb-2">COLLECTION_0{product.id}</span>
                     <h3 className="text-4xl font-black tracking-tighter mb-6">{product.name}</h3>
                   </div>
                   <div className="flex justify-between items-center">
