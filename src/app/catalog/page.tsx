@@ -2,15 +2,16 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Filter, ChevronDown } from "lucide-react";
 
 const products = [
-  { id: 1, name: "AESTHETIC VASE", price: "$120", category: "DECOR" },
-  { id: 2, name: "MINIMALIST CHAIR", price: "$450", category: "FURNITURE" },
-  { id: 3, name: "LUXE TIMEPIECE", price: "$890", category: "ACCESSORIES" },
-  { id: 4, name: "MODERN LAMP", price: "$230", category: "LIGHTING" },
-  { id: 5, name: "SILK SCARF", price: "$150", category: "FASHION" },
-  { id: 6, name: "CERAMIC BOWL", price: "$85", category: "DECOR" },
+  { id: 1, name: "AESTHETIC VASE", price: "$120", category: "DECOR", img: "/vase.png" },
+  { id: 2, name: "MINIMALIST CHAIR", price: "$450", category: "FURNITURE", img: "/chair.png" },
+  { id: 3, name: "LUXE TIMEPIECE", price: "$890", category: "ACCESSORIES", img: "/watch.png" },
+  { id: 4, name: "MODERN LAMP", price: "$230", category: "LIGHTING", img: "/vase.png" },
+  { id: 5, name: "SILK SCARF", price: "$150", category: "FASHION", img: "/chair.png" },
+  { id: 6, name: "CERAMIC BOWL", price: "$85", category: "DECOR", img: "/watch.png" },
 ];
 
 export default function Catalog() {
@@ -45,14 +46,21 @@ export default function Catalog() {
             key={product.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
+            transition={{ delay: idx * 0.05 }}
             className="group cursor-pointer"
           >
             <Link href={`/product/${product.id}`}>
               <div className="aspect-square glass rounded-3xl mb-6 relative overflow-hidden flex items-center justify-center">
-                <div className="w-48 h-48 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
-                <div className="text-accent/10 font-black text-8xl absolute select-none">{product.id}</div>
-                <div className="relative z-10 w-24 h-24 border-2 border-accent/20 rounded-xl group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500"></div>
+                <div className="absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+                  <Image 
+                    src={product.img} 
+                    alt={product.name}
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-1000"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
               <div className="flex justify-between items-end">
                 <div>

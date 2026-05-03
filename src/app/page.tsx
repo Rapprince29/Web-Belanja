@@ -3,20 +3,22 @@
 import ThreeCanvas from "@/components/ThreeCanvas";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, ShoppingBag } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-mesh overflow-hidden">
       
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center px-6 md:px-20">
+      <section className="relative h-screen flex items-center px-6 md:px-20 hero-section">
         <ThreeCanvas />
         
         <div className="relative z-10 max-w-2xl">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="text-accent font-bold tracking-[0.5em] text-sm mb-4 block">PREMIUM COLLECTION 2024</span>
             <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-6">
@@ -28,9 +30,9 @@ export default function Home() {
             </p>
             
             <div className="flex items-center gap-4">
-              <button className="bg-accent text-accent-foreground px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+              <Link href="/catalog" className="bg-accent text-accent-foreground px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform">
                 SHOP NOW <ArrowRight size={20} />
-              </button>
+              </Link>
               <button className="border border-white/10 hover:bg-white/5 px-8 py-4 rounded-full font-bold transition-colors">
                 VIEW STORY
               </button>
@@ -55,32 +57,40 @@ export default function Home() {
             <h2 className="text-4xl font-bold tracking-tight mb-4">SELECTED PIECES</h2>
             <div className="h-1 w-20 bg-accent"></div>
           </div>
-          <button className="text-accent font-bold flex items-center gap-2 hover:gap-4 transition-all">
+          <Link href="/catalog" className="text-accent font-bold flex items-center gap-2 hover:gap-4 transition-all">
             VIEW ALL COLLECTIONS <ArrowRight size={18} />
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[1, 2, 3].map((i) => (
+          {[
+            { id: 1, name: "AESTHETIC VASE", price: "$120", img: "/vase.png" },
+            { id: 2, name: "MINIMALIST CHAIR", price: "$450", img: "/chair.png" },
+            { id: 3, name: "LUXE TIMEPIECE", price: "$890", img: "/watch.png" },
+          ].map((product, i) => (
             <motion.div 
-              key={i}
+              key={product.id}
               whileHover={{ y: -10 }}
               className="group"
             >
-              <div className="aspect-[4/5] glass rounded-2xl mb-6 relative overflow-hidden flex items-center justify-center">
-                <div className="w-32 h-32 bg-accent/20 rounded-full blur-3xl absolute group-hover:scale-150 transition-transform duration-700"></div>
-                <div className="text-accent font-bold text-4xl opacity-20 group-hover:opacity-100 transition-opacity">0{i}</div>
+              <div className="aspect-[4/5] glass rounded-3xl mb-6 relative overflow-hidden flex items-center justify-center">
+                <Image 
+                  src={product.img} 
+                  alt={product.name}
+                  fill
+                  className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+                />
                 <button className="absolute bottom-6 right-6 p-4 bg-white text-black rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                   <ShoppingBag size={20} />
                 </button>
               </div>
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-bold mb-1">AESTHETIC PIECE {i}</h3>
+                  <h3 className="text-xl font-bold mb-1">{product.name}</h3>
                   <p className="text-muted-foreground text-sm uppercase tracking-widest">Minimalist Design</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-accent font-bold">$299.00</div>
+                  <div className="text-accent font-bold">{product.price}</div>
                   <div className="flex items-center gap-1 text-xs mt-1">
                     <Star size={10} fill="currentColor" className="text-accent" />
                     <span className="text-muted-foreground">4.9</span>
@@ -91,7 +101,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
     </main>
   );
 }
