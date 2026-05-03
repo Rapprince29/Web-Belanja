@@ -1,59 +1,62 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, Search, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white border-b-4 border-black px-6 h-20 flex items-center justify-between">
-      <Link href="/" className="text-3xl font-black tracking-tighter flex items-center gap-0">
-        <span className="bg-black text-white px-3 py-1 border-2 border-black">ART</span>
-        <span className="border-2 border-black px-3 py-1">SHOP</span>
-      </Link>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? 'h-16 glass' : 'h-24 bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
+        <Link href="/" className="text-2xl font-black tracking-tighter flex items-center gap-2 group">
+          <span className="text-white group-hover:text-muted-foreground transition-colors uppercase italic">MASTER</span>
+          <span className="text-white font-light tracking-[0.3em]">PIECE</span>
+        </Link>
 
-      <div className="hidden md:flex items-center h-full">
-        <Link href="/catalog" className="h-full flex items-center px-6 border-l-4 border-black hover:bg-yellow font-black text-xs tracking-widest transition-colors">
-          TYPOGRAPHY
-        </Link>
-        <Link href="/catalog" className="h-full flex items-center px-6 border-l-4 border-black hover:bg-secondary font-black text-xs tracking-widest transition-colors">
-          3D
-        </Link>
-        <Link href="/catalog" className="h-full flex items-center px-6 border-l-4 border-black hover:bg-accent font-black text-xs tracking-widest transition-colors">
-          TRANSITIONS
-        </Link>
-        <Link href="/catalog" className="h-full flex items-center px-6 border-l-4 border-black hover:bg-yellow font-black text-xs tracking-widest transition-colors">
-          ILLUSTRATION
-        </Link>
-      </div>
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-12 text-[10px] font-black tracking-[0.3em]">
+          {["TYPOGRAPHY", "3D", "TRANSITIONS", "ILLUSTRATION"].map((item) => (
+            <Link key={item} href="/catalog" className="text-white/60 hover:text-white transition-all relative group">
+              {item}
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-white group-hover:w-full transition-all duration-500"></span>
+            </Link>
+          ))}
+        </div>
 
-      <div className="flex items-center gap-0 h-full border-l-4 border-black">
-        <button className="h-full px-6 hover:bg-black hover:text-white transition-colors border-r-4 border-black">
-          <Search size={24} strokeWidth={3} />
-        </button>
-        <button className="h-full px-6 hover:bg-accent transition-colors border-r-4 border-black relative group">
-          <ShoppingBag size={24} strokeWidth={3} />
-          <span className="absolute top-2 right-2 bg-black text-white text-[10px] font-black px-1 border-2 border-white">0</span>
-        </button>
-        <button className="md:hidden px-6" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
-        </button>
+        <div className="flex items-center gap-8">
+          <button className="text-white/60 hover:text-white transition-colors"><Search size={18} /></button>
+          <button className="text-white/60 hover:text-white transition-colors relative group">
+            <ShoppingBag size={18} />
+            <span className="absolute -top-2 -right-2 bg-white text-black text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          </button>
+          <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            className="absolute top-20 left-0 w-full bg-white border-b-4 border-black p-10 flex flex-col gap-6 md:hidden z-40"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-0 left-0 w-full h-screen bg-black flex flex-col justify-center items-center gap-12 md:hidden z-40"
           >
-            <Link href="/catalog" className="text-4xl font-black italic hover:text-accent" onClick={() => setIsOpen(false)}>TYPOGRAPHY</Link>
-            <Link href="/catalog" className="text-4xl font-black italic hover:text-secondary" onClick={() => setIsOpen(false)}>3D</Link>
-            <Link href="/catalog" className="text-4xl font-black italic hover:text-yellow" onClick={() => setIsOpen(false)}>TRANSITIONS</Link>
+            <button onClick={() => setIsOpen(false)} className="absolute top-8 right-8 text-white"><X size={32} /></button>
+            {["TYPOGRAPHY", "3D", "TRANSITIONS", "ILLUSTRATION"].map((item) => (
+              <Link key={item} href="/catalog" className="text-4xl font-black italic text-white hover:text-white/60" onClick={() => setIsOpen(false)}>{item}</Link>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>

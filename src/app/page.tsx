@@ -18,135 +18,161 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen pt-20 bg-dot relative">
+    <main className="min-h-screen bg-mesh overflow-hidden relative">
       
-      {/* Toast Notification */}
+      {/* Elegant Toast */}
       <AnimatePresence>
         {showToast && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5, y: 100 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed bottom-10 right-10 z-[100] bg-yellow border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex items-center gap-4"
+            initial={{ opacity: 0, y: 50, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 20, x: "-50%" }}
+            className="fixed bottom-10 left-1/2 z-[100] glass px-8 py-4 rounded-full flex items-center gap-4 border border-white/10"
           >
-            <Zap size={32} fill="black" />
-            <span className="font-black text-xl uppercase tracking-tighter">{activeProduct} SAVED!</span>
+            <CheckCircle className="text-white" size={20} />
+            <span className="font-bold text-xs tracking-widest uppercase">{activeProduct} ADDED TO COLLECTION</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-80px)] border-b-4 border-black">
-        <div className="lg:col-span-7 p-10 lg:p-20 border-r-4 border-black flex flex-col justify-center bg-white">
+      {/* Hero Section: Minimalist & Experimental */}
+      <section className="relative h-screen flex flex-col justify-center items-center px-6 md:px-20 hero-section">
+        <ThreeCanvas />
+        
+        <div className="relative z-10 text-center max-w-4xl">
           <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "backOut" }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="bg-secondary border-4 border-black px-4 py-2 inline-block mb-8 font-black uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              CREATIVE ASSETS // 2024
-            </div>
-            <h1 className="text-7xl lg:text-9xl font-black tracking-tighter leading-[0.8] mb-10 uppercase">
+            <span className="text-white/40 font-black tracking-[0.8em] text-[10px] mb-8 block uppercase">EXPERIMENTAL_COLLECTION_2024</span>
+            <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-none mb-10 text-gradient">
               ART & <br />
-              <span className="bg-yellow px-4 border-4 border-black italic">ILLUSTRATION</span>
+              ILLUSTRATION
             </h1>
-            <p className="text-2xl font-bold max-w-xl mb-12 leading-tight">
-              A premium marketplace for Typography, 3D assets, and Motion Inspiration.
+            <p className="text-white/60 text-lg md:text-xl font-light max-w-xl mx-auto mb-12 leading-relaxed">
+              Where minimalist aesthetics meet complex motion design. Explore the future of creative assets.
             </p>
             
-            <div className="flex flex-wrap gap-6">
-              <Link href="/catalog" className="brutal-btn bg-accent text-white text-2xl flex items-center gap-3">
-                BROWSE COLLECTIONS <ArrowRight size={32} strokeWidth={3} />
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+              <Link href="/catalog" className="px-12 py-5 bg-white text-black rounded-full font-black text-[10px] tracking-[0.4em] hover:bg-white/90 hover:scale-105 transition-all">
+                EXPLORE COLLECTIONS
               </Link>
+              <button className="text-white/40 hover:text-white transition-colors font-black text-[10px] tracking-[0.4em]">
+                OUR MANIFESTO
+              </button>
             </div>
           </motion.div>
         </div>
 
-        <div className="lg:col-span-5 relative bg-muted flex items-center justify-center p-10">
-          <div className="w-full h-full border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] bg-white relative overflow-hidden">
-            <div className="absolute top-4 left-4 z-10 bg-black text-white px-3 py-1 font-black text-xs italic uppercase">3D_ELEMENTS.COLLECTION</div>
-            <ThreeCanvas />
-          </div>
+        {/* Dynamic Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+          <div className="h-20 w-px bg-gradient-to-b from-transparent via-white/20 to-white/40"></div>
+          <span className="text-white/20 text-[8px] font-black tracking-[0.5em] uppercase">SCROLL</span>
         </div>
       </section>
 
-      {/* Collections Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 border-b-4 border-black bg-white">
-        {[
-          { label: "TYPOGRAPHY", color: "hover:bg-yellow" },
-          { label: "3D", color: "hover:bg-secondary" },
-          { label: "MENU INSPIRATION", color: "hover:bg-accent" },
-          { label: "TRANSITIONS", color: "hover:bg-yellow" },
-          { label: "ART & ILLUS", color: "hover:bg-secondary" },
-        ].map((item, i) => (
-          <Link key={i} href="/catalog" className={`${item.color} p-8 border-r-4 last:border-r-0 border-black transition-all group`}>
-            <h3 className="text-2xl font-black mb-4 tracking-tighter group-hover:italic">{item.label}</h3>
-            <div className="text-[10px] font-black opacity-40 group-hover:opacity-100">EXPLORE_COLLECTION.0{i+1}</div>
-          </Link>
-        ))}
-      </section>
-
-      {/* Featured Pieces */}
-      <section className="p-10 lg:p-20">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-10">
-          <div>
-            <h2 className="text-6xl lg:text-8xl font-black tracking-tighter uppercase italic">Top Assets</h2>
-            <div className="h-4 w-64 bg-accent border-4 border-black -mt-4 ml-4"></div>
-          </div>
-          <Link href="/catalog" className="brutal-btn bg-white text-black">
-            VIEW ALL
-          </Link>
+      {/* Experimental Asymmetric Section */}
+      <section className="py-40 px-6 md:px-20 grid grid-cols-1 lg:grid-cols-12 gap-20">
+        <div className="lg:col-span-5">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="sticky top-40"
+          >
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-10 uppercase italic">Experimental <br /> Thinking.</h2>
+            <p className="text-white/60 text-xl font-light leading-relaxed mb-10">
+              We break standard UI patterns to create immersive digital experiences that resonate with the modern creator.
+            </p>
+            <div className="flex gap-10">
+              <div className="text-white">
+                <div className="text-4xl font-black mb-2">99.9%</div>
+                <div className="text-[10px] font-black tracking-widest opacity-40">PRECISION</div>
+              </div>
+              <div className="text-white">
+                <div className="text-4xl font-black mb-2">24/7</div>
+                <div className="text-[10px] font-black tracking-widest opacity-40">INSPIRATION</div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        
+        <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-10">
           {[
-            { id: 3, name: "KINETIC TYPE", price: "$890", img: "/watch.png", color: "bg-accent", cat: "TYPOGRAPHY" },
-            { id: 4, name: "UI MENU KIT", price: "$230", img: "/lamp.png", color: "bg-yellow", cat: "MENU" },
-            { id: 5, name: "FLUID MOTION", price: "$150", img: "/scarf.png", color: "bg-secondary", cat: "TRANSITIONS" },
+            { id: 3, name: "KINETIC TYPE", price: "$890", img: "/watch.png", cat: "TYPOGRAPHY" },
+            { id: 4, name: "UI MENU KIT", price: "$230", img: "/lamp.png", cat: "MENU" },
+            { id: 5, name: "FLUID MOTION", price: "$150", img: "/scarf.png", cat: "TRANSITIONS" },
+            { id: 6, name: "EDITORIAL TYPE", price: "$85", img: "/bowl.png", cat: "TYPOGRAPHY" },
           ].map((product, i) => (
             <motion.div 
               key={product.id}
-              whileHover={{ scale: 1.02 }}
-              className="brutal-card group flex flex-col"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="group cursor-pointer"
             >
-              <Link href={`/product/${product.id}`} className="flex-1 flex flex-col">
-                <div className={`aspect-square border-b-4 border-black relative overflow-hidden ${product.color}`}>
+              <Link href={`/product/${product.id}`}>
+                <div className="aspect-[3/4] glass rounded-3xl mb-8 relative overflow-hidden">
                   <Image 
                     src={product.img} 
                     alt={product.name}
                     fill
-                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s] ease-out"
                   />
-                  <div className="absolute top-4 right-4 bg-black text-white px-3 py-1 font-black text-[10px] italic">
-                    {product.cat}
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(product.name);
+                    }}
+                    className="absolute bottom-8 right-8 w-16 h-16 glass rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all hover:bg-white hover:text-black"
+                  >
+                    <ShoppingBag size={20} />
+                  </button>
                 </div>
-                <div className="p-8 flex-1 flex flex-col justify-between bg-white">
+                <div className="flex justify-between items-end">
                   <div>
-                    <h3 className="text-4xl font-black mb-2 tracking-tighter">{product.name}</h3>
-                    <div className="flex items-center gap-2 mb-6">
-                      <Star size={16} fill="black" />
-                      <span className="font-black text-[10px] uppercase">PREMIUM_ASSET</span>
-                    </div>
+                    <span className="text-[9px] font-black tracking-[0.4em] opacity-40 block mb-2 uppercase">{product.cat}</span>
+                    <h3 className="text-2xl font-black tracking-tighter">{product.name}</h3>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-3xl font-black underline decoration-yellow decoration-8 underline-offset-4">{product.price}</div>
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        addToCart(product.name);
-                      }}
-                      className="bg-black text-white p-4 hover:bg-yellow hover:text-black transition-colors z-20"
-                    >
-                      <ShoppingBag size={28} strokeWidth={3} />
-                    </button>
-                  </div>
+                  <span className="text-xl font-light opacity-60">{product.price}</span>
                 </div>
               </Link>
             </motion.div>
           ))}
         </div>
       </section>
+
+      {/* Minimalist Footer */}
+      <footer className="py-20 px-6 md:px-20 border-t border-white/5">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-20 mb-20">
+          <div className="max-w-md">
+            <h2 className="text-5xl font-black tracking-tighter mb-8 uppercase italic">Stay Inspired.</h2>
+            <div className="flex border-b border-white/20 pb-4">
+              <input type="text" placeholder="YOUR_EMAIL@XYZ.COM" className="bg-transparent flex-1 font-black text-xs tracking-widest focus:outline-none" />
+              <button className="text-white hover:opacity-60 transition-opacity font-black text-[10px] tracking-widest">JOIN</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-[10px] font-black tracking-[0.4em] opacity-40">
+            <div className="flex flex-col gap-6">
+              <span className="text-white opacity-100">SOCIAL</span>
+              <Link href="#" className="hover:opacity-100">INSTAGRAM</Link>
+              <Link href="#" className="hover:opacity-100">TWITTER</Link>
+            </div>
+            <div className="flex flex-col gap-6">
+              <span className="text-white opacity-100">INFO</span>
+              <Link href="#" className="hover:opacity-100">SHIPPING</Link>
+              <Link href="#" className="hover:opacity-100">RETURNS</Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center text-[8px] font-black tracking-[0.5em] opacity-20">
+          <span>MASTERPIECE // 2024</span>
+          <span>CRAFTED FOR THE DISRUPTORS</span>
+        </div>
+      </footer>
     </main>
   );
 }
